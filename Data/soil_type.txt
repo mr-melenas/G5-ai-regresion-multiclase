@@ -40,3 +40,57 @@
 | 38     | Soil\_Type38 | Leighcan - Cryorthents - Rock outcrop complex                         |
 | 39     | Soil\_Type39 | Leighcan - Cryumbrepts - Rock outcrop complex                         |
 | 40     | Soil\_Type40 | Cryorthents - Rock outcrop - Leighcan family complex                  |
+
+
+| Número | Variable | Descripción del tipo de suelo |
+| ------ | ------------ | --------------------------------------------------------------------- |
+| 1 | Wilderness_Area1 | Rawah Wilderness Area
+| 2 | Wilderness_Area2 | Neota Wilderness Area
+| 3 | Wilderness_Area3 | Comanche Peak Wilderness Area
+| 4 | Wilderness_Area4 | Cache la Poudre Wilderness Area
+
+
+
+
+| Número | Variable | Descripción del tipo de suelo |
+| ------ | ------------ | --------------------------------------------------------------------- |
+| 1 | Suelo\_Tipo1 | Familia Cathedral - Complejo de afloramiento rocoso, extremadamente pedregoso |
+| 2 | Suelo\_Tipo2 | Vanet - Complejo de familias Ratake, muy pedregoso |
+| 3 | Suelo\_Tipo3 | Haploborolis - Complejo de afloramiento rocoso, con escombros |
+| 4 | Suelo\_Tipo4 | Familia Ratake - Complejo de afloramiento rocoso, con escombros |
+| 5 | Suelo\_Tipo5 | Familia Vanet - Complejo de afloramiento rocoso, con escombros |
+| 6 | Suelo\_Tipo6 | Vanet - Familias Wetmore - Complejo de afloramiento rocoso, pedregoso |
+| 7 | Suelo\_Tipo7 | Familia Gothic |
+| 8 | Suelo\_Tipo8 | Supervisor - Complejo de familias Limber |
+| 9 | Suelo\_Tipo9 | Familia Troutville, muy pedregoso |
+| 10 | Tipo de suelo 10 | Bullwark - Familias Catamount - Complejo de afloramiento rocoso, con escombros |
+| 11 | Tipo de suelo 11 | Bullwark - Familias Catamount - Complejo de terreno rocoso, con escombros |
+| 12 | Tipo de suelo 12 | Familia Legault - Complejo de terreno rocoso, pedregoso |
+| 13 | Tipo de suelo 13 | Familia Catamount - Terreno rocoso - Complejo de la familia Bullwark, con escombros |
+| 14 | Tipo de suelo 14 | Pachic Argiborolis - Complejo Aquolis |
+| 15 | Tipo de suelo 15 | no especificado en el conjunto de datos CoverType del USFS |
+| 16 | Tipo de suelo 16 | Cryaquolis - Complejo Cryoborolis |
+| 17 | Tipo de suelo 17 | Familia Gateview - Complejo Cryaquolis |
+| 18 | Suelo\_Tipo 18 | Familia Rogert, muy pedregoso |
+| 19 | Suelo\_Tipo 19 | Cryoboralf típico |
+| 20 | Suelo\_Tipo 20 | Cryumbrept típico - Complejo Cryoboralf borólico |
+| 21 | Suelo\_Tipo 21 | Cryumbrept típico - Complejo Aquolis |
+| 22 | Suelo\_Tipo 22 | Familia Leighcan, extremadamente pedregoso |
+| 23 | Suelo\_Tipo 23 | Familia Leighcan, cálido, extremadamente pedregoso |
+| 24 | Suelo\_Tipo 24 | Familia Leighcan, cálido - Complejo de afloramiento rocoso, extremadamente pedregoso |
+| 25 | Suelo\_Tipo 25 | Familia Leighcan - Complejo de afloramiento rocoso, extremadamente pedregoso |
+| 26 | Suelo\_Tipo 26 | Complejo de familias Como - Legault, extremadamente pedregoso |
+| 27 | Suelo\_Tipo 27 | Familia Como - Terreno rocoso - Complejo de la familia Legault, extremadamente pedregoso |
+| 28 | Suelo\_Tipo 28 | Leighcan - Complejo de las familias Catamount, extremadamente pedregoso |
+| 29 | Suelo\_Tipo 29 | Familia Catamount - Complejo de afloramiento rocoso, extremadamente pedregoso |
+| 30 | Suelo\_Tipo 30 | Leighcan - Familias Catamount - Complejo de afloramiento rocoso, extremadamente pedregoso |
+| 31 | Suelo\_Tipo 31 | Cryorthents - Complejo de terreno rocoso |
+| 32 | Suelo\_Tipo 32 | Cryumbrepts - Complejo de afloramiento rocoso |
+| 33 | Suelo\_Tipo 33 | Familia Bross - Terreno rocoso - Complejo Cryumbrepts, extremadamente pedregoso |
+| 34 | Suelo\_Tipo 34 | Afloramiento rocoso - Cryumbrepts - Complejo de la familia Leighcan, extremadamente pedregoso |
+| 35 | Tipo de suelo 35 | Complejo Leighcan - Cryaquolis |
+| 36 | Tipo de suelo 36 | Leighcan - Cryaquolis - Complejo de afloramiento rocoso |
+| 37 | Tipo de suelo 37 | Cryaquolis - Complejo de la familia Leighcan |
+| 38 | Tipo de suelo 38 | Leighcan - Cryorthents - Complejo de afloramiento rocoso |
+| 39 | Tipo de suelo 39 | Leighcan - Cryumbrepts - Complejo de afloramiento rocoso |
+| 40 | Tipo de suelo 40 | Cryorthents - Afloramiento rocoso - Complejo de la familia Leighcan
