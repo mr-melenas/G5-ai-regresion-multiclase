@@ -1,0 +1,42 @@
+| Número | Variable     | Descripción del tipo de suelo                                         |
+| ------ | ------------ | --------------------------------------------------------------------- |
+| 1      | Soil\_Type1  | Cathedral family - Rock outcrop complex, extremely stony              |
+| 2      | Soil\_Type2  | Vanet - Ratake families complex, very stony                           |
+| 3      | Soil\_Type3  | Haploborolis - Rock outcrop complex, rubbly                           |
+| 4      | Soil\_Type4  | Ratake family - Rock outcrop complex, rubbly                          |
+| 5      | Soil\_Type5  | Vanet family - Rock outcrop complex complex, rubbly                   |
+| 6      | Soil\_Type6  | Vanet - Wetmore families - Rock outcrop complex, stony                |
+| 7      | Soil\_Type7  | Gothic family                                                         |
+| 8      | Soil\_Type8  | Supervisor - Limber families complex                                  |
+| 9      | Soil\_Type9  | Troutville family, very stony                                         |
+| 10     | Soil\_Type10 | Bullwark - Catamount families - Rock outcrop complex, rubbly          |
+| 11     | Soil\_Type11 | Bullwark - Catamount families - Rock land complex, rubbly             |
+| 12     | Soil\_Type12 | Legault family - Rock land complex, stony                             |
+| 13     | Soil\_Type13 | Catamount family - Rock land - Bullwark family complex, rubbly        |
+| 14     | Soil\_Type14 | Pachic Argiborolis - Aquolis complex                                  |
+| 15     | Soil\_Type15 | unspecified in the USFS CoverType dataset                             |
+| 16     | Soil\_Type16 | Cryaquolis - Cryoborolis complex                                      |
+| 17     | Soil\_Type17 | Gateview family - Cryaquolis complex                                  |
+| 18     | Soil\_Type18 | Rogert family, very stony                                             |
+| 19     | Soil\_Type19 | Typic Cryoboralf                                                      |
+| 20     | Soil\_Type20 | Typic Cryumbrept - Borollic Cryoboralf complex                        |
+| 21     | Soil\_Type21 | Typic Cryumbrept - Aquolis complex                                    |
+| 22     | Soil\_Type22 | Leighcan family, extremely stony                                      |
+| 23     | Soil\_Type23 | Leighcan family, warm, extremely stony                                |
+| 24     | Soil\_Type24 | Leighcan family, warm - Rock outcrop complex, extremely stony         |
+| 25     | Soil\_Type25 | Leighcan family - Rock outcrop complex, extremely stony               |
+| 26     | Soil\_Type26 | Como - Legault families complex, extremely stony                      |
+| 27     | Soil\_Type27 | Como family - Rock land - Legault family complex, extremely stony     |
+| 28     | Soil\_Type28 | Leighcan - Catamount families complex, extremely stony                |
+| 29     | Soil\_Type29 | Catamount family - Rock outcrop complex, extremely stony              |
+| 30     | Soil\_Type30 | Leighcan - Catamount families - Rock outcrop complex, extremely stony |
+| 31     | Soil\_Type31 | Cryorthents - Rock land complex                                       |
+| 32     | Soil\_Type32 | Cryumbrepts - Rock outcrop complex                                    |
+| 33     | Soil\_Type33 | Bross family - Rock land - Cryumbrepts complex, extremely stony       |
+| 34     | Soil\_Type34 | Rock outcrop - Cryumbrepts - Leighcan family complex, extremely stony |
+| 35     | Soil\_Type35 | Leighcan - Cryaquolis complex                                         |
+| 36     | Soil\_Type36 | Leighcan - Cryaquolis - Rock outcrop complex                          |
+| 37     | Soil\_Type37 | Cryaquolis - Leighcan family complex                                  |
+| 38     | Soil\_Type38 | Leighcan - Cryorthents - Rock outcrop complex                         |
+| 39     | Soil\_Type39 | Leighcan - Cryumbrepts - Rock outcrop complex                         |
+| 40     | Soil\_Type40 | Cryorthents - Rock outcrop - Leighcan family complex                  |
