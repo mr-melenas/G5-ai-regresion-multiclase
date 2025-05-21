@@ -101,7 +101,7 @@ def test_predict():
         print("✅ Éxito: Ruta /predict funciona correctamente")
         print(f"Respuesta: {json.dumps(response.json(), indent=2)}")
     else:
-        print(f"❌ Error -test_predict (): {response.status_code} - {response.text}")
+        print(f"❌ Error - test_predict (): {response.status_code} - {response.text}")
 
 # Probar la ruta de predicción por lotes
 def test_batch_predict():

@@ -1,11 +1,9 @@
-from fastapi import FastAPI, HTTPException, Depends, BackgroundTasks
+from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import pandas as pd
-import numpy as np
 import os
-import sys
-from typing import List, Dict, Any
+from typing import List, Dict
 
 from app.schemas import (
     PredictionInput, 
@@ -45,15 +43,17 @@ COVER_TYPE_MAPPING = {
 }
 
 # Variable global para el modelo
-forest_cover_model = None
+forest_cover_model = ForestCoverModel()
+
+# Cargar el modelo al iniciar la aplicación
+try:
+    forest_cover_model.load_model()
+    print("Modelo cargado correctamente al iniciar la aplicación")
+except Exception as e:
+    print(f"Error al cargar el modelo: {e}")
 
 # Función para obtener el modelo
 def get_model():
-    global forest_cover_model
-    if forest_cover_model is None:
-        forest_cover_model = ForestCoverModel()
-        # Cargar el modelo pre-entrenado
-        forest_cover_model.load_model()
     return forest_cover_model
 
 
@@ -96,6 +96,8 @@ async def predict(input_data: PredictionInput, model: ForestCoverModel = Depends
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
 
 # Ruta para realizar predicciones por lotes
 @app.post("/predict/batch", response_model=BatchPredictionOutput)

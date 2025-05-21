@@ -4,9 +4,11 @@ import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 
+
 class ForestCoverModel:
     def __init__(self):
         self.model = None
+        self.scaler = None
         self.all_features = [
             'Elevation', 'Aspect', 'Slope', 'Horizontal_Distance_To_Hydrology',
             'Vertical_Distance_To_Hydrology', 'Horizontal_Distance_To_Roadways',
@@ -24,13 +26,17 @@ class ForestCoverModel:
         ]
     
     def load_model(self):
-        """Carga el modelo pre-entrenado desde un archivo pickle"""
+        """Carga el modelo pre-entrenado y el escalador desde un archivo pickle"""
         model_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'Modelos', 'modelo_y_scaler.pkl')
         if not os.path.exists(model_path):
             raise FileNotFoundError(f"No se encontró el modelo en {model_path}")
         
         with open(model_path, 'rb') as f:
-            self.model = pickle.load(f)
+            model_data = pickle.load(f)
+            
+        # Extraer el modelo y el escalador del diccionario cargado
+        self.model = model_data['modelo']
+        self.scaler = model_data['escalador']
     
     def _preprocess_input(self, features):
         """Preprocesa los datos de entrada para asegurar que tienen el formato correcto"""
@@ -56,6 +62,17 @@ class ForestCoverModel:
         
         # Preprocesar los datos de entrada
         X = self._preprocess_input(features)
+        
+        # Obtener las columnas cuantitativas que necesitan ser escaladas
+        columnas_cuantitativas = [
+            'Elevation', 'Aspect', 'Slope', 'Horizontal_Distance_To_Hydrology',
+            'Vertical_Distance_To_Hydrology', 'Horizontal_Distance_To_Roadways',
+            'Hillshade_9am', 'Hillshade_Noon', 'Hillshade_3pm',
+            'Horizontal_Distance_To_Fire_Points'
+        ]
+        
+        # Aplicar el escalador a las columnas cuantitativas
+        X[columnas_cuantitativas] = self.scaler.transform(X[columnas_cuantitativas])
         
         # Realizar la predicción
         predictions = self.model.predict(X)
