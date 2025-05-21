@@ -2,41 +2,60 @@ import os
 import pickle
 import pandas as pd
 import numpy as np
-from sklearn.ensemble import RandomForestClassifier
+import joblib
+from sklearn.pipeline import Pipeline
 
 
 class ForestCoverModel:
     def __init__(self):
         self.model = None
-        self.scaler = None
-        self.all_features = [
+        # Características numéricas
+        self.numeric_features = [
             'Elevation', 'Aspect', 'Slope', 'Horizontal_Distance_To_Hydrology',
             'Vertical_Distance_To_Hydrology', 'Horizontal_Distance_To_Roadways',
             'Hillshade_9am', 'Hillshade_Noon', 'Hillshade_3pm',
-            'Horizontal_Distance_To_Fire_Points',
-            'Wilderness_Area_1', 'Wilderness_Area_2', 'Wilderness_Area_3', 'Wilderness_Area_4',
-            'Soil_Type_1', 'Soil_Type_2', 'Soil_Type_3', 'Soil_Type_4', 'Soil_Type_5',
-            'Soil_Type_6', 'Soil_Type_7', 'Soil_Type_8', 'Soil_Type_9', 'Soil_Type_10',
-            'Soil_Type_11', 'Soil_Type_12', 'Soil_Type_13', 'Soil_Type_14', 'Soil_Type_15',
-            'Soil_Type_16', 'Soil_Type_17', 'Soil_Type_18', 'Soil_Type_19', 'Soil_Type_20',
-            'Soil_Type_21', 'Soil_Type_22', 'Soil_Type_23', 'Soil_Type_24', 'Soil_Type_25',
-            'Soil_Type_26', 'Soil_Type_27', 'Soil_Type_28', 'Soil_Type_29', 'Soil_Type_30',
-            'Soil_Type_31', 'Soil_Type_32', 'Soil_Type_33', 'Soil_Type_34', 'Soil_Type_35',
-            'Soil_Type_36', 'Soil_Type_37', 'Soil_Type_38', 'Soil_Type_39', 'Soil_Type_40'
+            'Horizontal_Distance_To_Fire_Points'
         ]
+        
+        # Características de área silvestre (sin guion bajo adicional para coincidir con la API)
+        self.wilderness_features = [
+            f'Wilderness_Area{i}' for i in range(1, 5)
+        ]
+        
+        # Características de tipo de suelo (sin guion bajo adicional para coincidir con la API)
+        self.soil_features = [
+            f'Soil_Type{i}' for i in range(1, 41)
+        ]
+        
+        # Lista completa de características que el modelo espera
+        self.all_features = self.numeric_features + self.wilderness_features + self.soil_features
     
     def load_model(self):
-        """Carga el modelo pre-entrenado y el escalador desde un archivo pickle"""
-        model_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'Modelos', 'modelo_y_scaler.pkl')
+        """Carga el modelo pipeline pre-entrenado desde un archivo pickle"""
+        model_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'Modelos', 'modelo_pipeline.pkl')
         if not os.path.exists(model_path):
             raise FileNotFoundError(f"No se encontró el modelo en {model_path}")
         
-        with open(model_path, 'rb') as f:
-            model_data = pickle.load(f)
+        try:
+            # Intentar cargar el modelo con diferentes opciones
+            with open(model_path, 'rb') as f:
+                self.model = pickle.load(f, encoding='latin1')
+        except Exception as e:
+            # Si falla, intentar con joblib
+            try:
+                self.model = joblib.load(model_path)
+            except Exception as e2:
+                error_msg = f"Error al cargar el modelo: {str(e)} / {str(e2)}"
+                print(error_msg)
+                raise ValueError(error_msg)
+        
+        # Verificar que el modelo sea un pipeline válido
+        if self.model is None:
+            raise ValueError("El modelo cargado es None")
             
-        # Extraer el modelo y el escalador del diccionario cargado
-        self.model = model_data['modelo']
-        self.scaler = model_data['escalador']
+        print(f"Modelo cargado correctamente desde {model_path}")
+        print(f"Tipo de modelo: {type(self.model)}")
+        
     
     def _preprocess_input(self, features):
         """Preprocesa los datos de entrada para asegurar que tienen el formato correcto"""
@@ -47,6 +66,31 @@ class ForestCoverModel:
             # Ya es un DataFrame
             df = features
         
+        # Mapeo de nombres de columnas: convertir de 'Soil_Type1' a 'Soil_Type_1' y viceversa
+        column_mapping = {}
+        
+        # Crear mapeo para Wilderness_Area
+        for i in range(1, 5):
+            input_col = f'Wilderness_Area{i}'
+            model_col = f'Wilderness_Area_{i}'
+            if input_col in df.columns:
+                column_mapping[input_col] = model_col
+            elif model_col in df.columns:
+                column_mapping[model_col] = input_col
+        
+        # Crear mapeo para Soil_Type
+        for i in range(1, 41):
+            input_col = f'Soil_Type{i}'
+            model_col = f'Soil_Type_{i}'
+            if input_col in df.columns:
+                column_mapping[input_col] = model_col
+            elif model_col in df.columns:
+                column_mapping[model_col] = input_col
+        
+        # Renombrar columnas si es necesario
+        if column_mapping:
+            df = df.rename(columns=column_mapping)
+        
         # Asegurar que todas las características necesarias estén presentes
         for feature in self.all_features:
             if feature not in df.columns:
@@ -56,29 +100,24 @@ class ForestCoverModel:
         return df[self.all_features]
     
     def predict(self, features):
-        """Realiza predicciones utilizando el modelo cargado"""
+        """Realiza predicciones utilizando el modelo pipeline cargado"""
         if self.model is None:
             raise ValueError("El modelo no ha sido cargado. Llame a load_model() primero.")
         
-        # Preprocesar los datos de entrada
-        X = self._preprocess_input(features)
-        
-        # Obtener las columnas cuantitativas que necesitan ser escaladas
-        columnas_cuantitativas = [
-            'Elevation', 'Aspect', 'Slope', 'Horizontal_Distance_To_Hydrology',
-            'Vertical_Distance_To_Hydrology', 'Horizontal_Distance_To_Roadways',
-            'Hillshade_9am', 'Hillshade_Noon', 'Hillshade_3pm',
-            'Horizontal_Distance_To_Fire_Points'
-        ]
-        
-        # Aplicar el escalador a las columnas cuantitativas
-        X[columnas_cuantitativas] = self.scaler.transform(X[columnas_cuantitativas])
-        
-        # Realizar la predicción
-        predictions = self.model.predict(X)
-        
-        # Obtener las probabilidades para cada clase
-        probabilities = self.model.predict_proba(X)
-        
-        return predictions, probabilities
+        try:
+            # Preprocesar los datos de entrada
+            X = self._preprocess_input(features)
+            
+            # Realizar la predicción usando el pipeline completo
+            # (el pipeline ya incluye el preprocesamiento y escalado)
+            predictions = self.model.predict(X)
+            
+            # Obtener las probabilidades para cada clase
+            probabilities = self.model.predict_proba(X)
+            
+            return predictions, probabilities
+        except Exception as e:
+            error_msg = f"Error durante la predicción: {str(e)}"
+            print(error_msg)
+            raise ValueError(error_msg)
 

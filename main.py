@@ -10,8 +10,7 @@ from app.schemas import (
     BatchPredictionInput, 
     PredictionOutput, 
     BatchPredictionOutput, 
-    ModelInfo, 
-    ErrorResponse
+    ModelInfo
 )
 from app.model import ForestCoverModel
 
@@ -30,6 +29,16 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Manejador de excepciones global
+@app.exception_handler(Exception)
+async def global_exception_handler(request, exc):
+    error_msg = f"Error no manejado: {str(exc)}"
+    print(f"ERROR GLOBAL: {error_msg}")
+    return JSONResponse(
+        status_code=500,
+        content={"error": error_msg}
+    )
 
 # Mapeo de tipos de cobertura forestal
 COVER_TYPE_MAPPING = {
@@ -56,6 +65,11 @@ except Exception as e:
 def get_model():
     return forest_cover_model
 
+# Ruta principal
+@app.get("/")
+async def root():
+    return {"mensaje": "API de Clasificación de Cobertura Forestal. Accede a /docs para la documentación."}
+
 
 
 # Ruta para obtener información del modelo
@@ -78,6 +92,12 @@ async def predict(input_data: PredictionInput, model: ForestCoverModel = Depends
     try:
         # Convertir la entrada a un diccionario
         features = input_data.dict()
+        print(f"Procesando predicción con características: {features}")
+        
+        # Verificar que el modelo esté cargado
+        if model.model is None:
+            print("Error: El modelo no está cargado correctamente")
+            raise HTTPException(status_code=500, detail="El modelo no está cargado correctamente. Por favor, reinicie la aplicación.")
         
         # Realizar la predicción
         prediction, probabilities = model.predict(features)
@@ -85,8 +105,15 @@ async def predict(input_data: PredictionInput, model: ForestCoverModel = Depends
         # Obtener la clase predicha (el primer elemento ya que solo hay una muestra)
         predicted_class = int(prediction[0])
         
+        # Verificar que la clase predicha esté en el mapeo
+        if predicted_class not in COVER_TYPE_MAPPING:
+            print(f"Advertencia: La clase predicha {predicted_class} no está en el mapeo. Usando clase 1 por defecto.")
+            predicted_class = 1
+            
         # Obtener las probabilidades para cada clase
         prob_dict = {COVER_TYPE_MAPPING[i+1]: float(probabilities[0][i]) for i in range(len(probabilities[0]))}
+        
+        print(f"Predicción exitosa: clase {predicted_class} ({COVER_TYPE_MAPPING[predicted_class]})")
         
         # Crear la respuesta
         return PredictionOutput(
@@ -94,8 +121,18 @@ async def predict(input_data: PredictionInput, model: ForestCoverModel = Depends
             cover_type_name=COVER_TYPE_MAPPING[predicted_class],
             probabilities=prob_dict
         )
+    except ValueError as e:
+        error_msg = f"Error de valor en la predicción: {str(e)}"
+        print(error_msg)
+        raise HTTPException(status_code=500, detail=error_msg)
+    except KeyError as e:
+        error_msg = f"Error de clave en la predicción: {str(e)}"
+        print(error_msg)
+        raise HTTPException(status_code=500, detail=error_msg)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        error_msg = f"Error inesperado en la predicción: {str(e)}"
+        print(error_msg)
+        raise HTTPException(status_code=500, detail=error_msg)
 
 
 
@@ -104,8 +141,14 @@ async def predict(input_data: PredictionInput, model: ForestCoverModel = Depends
 async def predict_batch(input_data: BatchPredictionInput, model: ForestCoverModel = Depends(get_model)):
     """Realiza predicciones para múltiples conjuntos de características"""
     try:
+        # Verificar que el modelo esté cargado
+        if model.model is None:
+            print("Error: El modelo no está cargado correctamente")
+            raise HTTPException(status_code=500, detail="El modelo no está cargado correctamente. Por favor, reinicie la aplicación.")
+            
         # Convertir la entrada a una lista de diccionarios
         features_list = [item.dict() for item in input_data.inputs]
+        print(f"Procesando predicción por lotes con {len(features_list)} muestras")
         
         # Crear un DataFrame con todas las muestras
         features_df = pd.DataFrame(features_list)
@@ -117,6 +160,12 @@ async def predict_batch(input_data: BatchPredictionInput, model: ForestCoverMode
         results = []
         for i, pred in enumerate(predictions):
             predicted_class = int(pred)
+            
+            # Verificar que la clase predicha esté en el mapeo
+            if predicted_class not in COVER_TYPE_MAPPING:
+                print(f"Advertencia: La clase predicha {predicted_class} no está en el mapeo. Usando clase 1 por defecto.")
+                predicted_class = 1
+                
             prob_dict = {COVER_TYPE_MAPPING[j+1]: float(probabilities[i][j]) for j in range(len(probabilities[i]))}
             
             results.append(PredictionOutput(
@@ -125,32 +174,34 @@ async def predict_batch(input_data: BatchPredictionInput, model: ForestCoverMode
                 probabilities=prob_dict
             ))
         
+        print(f"Predicción por lotes exitosa: {len(results)} resultados generados")
+        
         # Crear la respuesta
         return BatchPredictionOutput(predictions=results)
+    except ValueError as e:
+        error_msg = f"Error de valor en la predicción por lotes: {str(e)}"
+        print(error_msg)
+        raise HTTPException(status_code=500, detail=error_msg)
+    except KeyError as e:
+        error_msg = f"Error de clave en la predicción por lotes: {str(e)}"
+        print(error_msg)
+        raise HTTPException(status_code=500, detail=error_msg)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        error_msg = f"Error inesperado en la predicción por lotes: {str(e)}"
+        print(error_msg)
+        raise HTTPException(status_code=500, detail=error_msg)
 
 # Manejador de excepciones personalizado
 @app.exception_handler(HTTPException)
 async def http_exception_handler(request, exc):
     return JSONResponse(
         status_code=exc.status_code,
-        content=ErrorResponse(error=str(exc.detail)).dict()
+        content={"error": str(exc.detail)}
     )
 
 @app.exception_handler(Exception)
 async def general_exception_handler(request, exc):
     return JSONResponse(
         status_code=500,
-        content=ErrorResponse(error="Error interno del servidor", detail=str(exc)).dict()
+        content={"error": "Error interno del servidor", "detail": str(exc)}
     )
-
-# Ruta raíz
-@app.get("/")
-async def root():
-    """Ruta principal de la API"""
-    return {
-        "message": "API de Clasificación de Cobertura Forestal",
-        "docs": "/docs",
-        "info": "/info"
-    }

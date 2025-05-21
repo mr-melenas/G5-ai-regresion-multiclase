@@ -14,7 +14,7 @@ import joblib
 # -----------------------------
 
 # Cargar el dataset
-df = pd.read_csv("dataframe.csv")
+df = pd.read_csv("covtype.csv")
 
 # Columnas numéricas continuas que deben escalarse
 columnas_cuantitativas = ['Elevation', 'Aspect', 'Slope', 'Horizontal_Distance_To_Hydrology',
