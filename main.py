@@ -15,7 +15,7 @@ from app.schemas import (
     ModelInfo, 
     ErrorResponse
 )
-from app.model import ForestCoverModel, train_and_save_model
+from app.model import ForestCoverModel
 
 # Crear la aplicación FastAPI
 app = FastAPI(
@@ -52,22 +52,11 @@ def get_model():
     global forest_cover_model
     if forest_cover_model is None:
         forest_cover_model = ForestCoverModel()
-        try:
-            # Intentar cargar el modelo pre-entrenado
-            forest_cover_model.load_model()
-        except FileNotFoundError:
-            # Si no existe, entrenar un nuevo modelo
-            print("No se encontró un modelo pre-entrenado. Entrenando un nuevo modelo...")
-            train_and_save_model()
-            forest_cover_model.load_model()
+        # Cargar el modelo pre-entrenado
+        forest_cover_model.load_model()
     return forest_cover_model
 
-# Ruta para entrenar el modelo en segundo plano
-@app.post("/train", response_model=Dict[str, str])
-async def train_model(background_tasks: BackgroundTasks):
-    """Entrena el modelo en segundo plano"""
-    background_tasks.add_task(train_and_save_model)
-    return {"message": "El entrenamiento del modelo ha comenzado en segundo plano"}
+
 
 # Ruta para obtener información del modelo
 @app.get("/info", response_model=ModelInfo)
