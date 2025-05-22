@@ -175,3 +175,6 @@ cython_debug/
 .pypirc
 
 .DS_Store
+Modelos/modelo_y_scaler.pkl
+Modelos/modelo_y_scaler_old.pkl
+Modelos/covtype.csv
