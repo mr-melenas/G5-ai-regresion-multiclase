@@ -19,8 +19,8 @@ RUN pip install -r requirements.txt --use-pep517 --no-cache-dir --timeout 60 -v
 
 COPY . .
 
-
+# Expone los puertos:
 EXPOSE 8000 
-#EXPOSE 7860 
+EXPOSE 8050
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
