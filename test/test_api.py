@@ -1,9 +1,14 @@
 import requests
 import json
 import os
+import sys
 import pickle
 from sklearn.ensemble import RandomForestClassifier
 import numpy as np
+
+# Añadir el directorio raíz del proyecto al path para poder importar módulos
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from app.database import save_data
 
 # Verificar que el modelo pre-entrenado existe
 def create_test_model():
@@ -31,7 +36,7 @@ def test_info():
     response = requests.get(f"{BASE_URL}/info")
     if response.status_code == 200:
         print("✅ Éxito: Ruta /info funciona correctamente")
-        print(f"Respuesta: {json.dumps(response.json(), indent=2)}")
+        #print(f"Respuesta: {json.dumps(response.json(), indent=2)}")
     else:
         print(f"❌ Error - test_info() : {response.status_code} - {response.text}")
 
@@ -99,8 +104,17 @@ def test_predict():
     try:
         response = requests.post(f"{BASE_URL}/predict", json=data, timeout=10)
         if response.status_code == 200:
+            response_json = response.json()
             print("✅ Éxito: Ruta /predict funciona correctamente")
             print(f"Respuesta: {json.dumps(response.json(), indent=2)}")
+
+            print(f"cover_type: {response_json['cover_type']}")
+            #print(f"Tipo de cobertura: {response.json()['cover_type']}")
+            save_data(data, int(response_json['cover_type']))
+            # Añadir el cover_type al diccionario `data`
+            #data["label"] = response_json["cover_type"]
+            
+            print(data)
         else:
             error_detail = ""
             try:

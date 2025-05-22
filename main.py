@@ -4,6 +4,8 @@ from fastapi.responses import JSONResponse
 import pandas as pd
 import os
 from typing import List, Dict
+from app.database import save_data
+
 
 from app.schemas import (
     PredictionInput, 
@@ -114,6 +116,10 @@ async def predict(input_data: PredictionInput, model: ForestCoverModel = Depends
         prob_dict = {COVER_TYPE_MAPPING[i+1]: float(probabilities[0][i]) for i in range(len(probabilities[0]))}
         
         print(f"Predicción exitosa: clase {predicted_class} ({COVER_TYPE_MAPPING[predicted_class]})")
+
+        # Guardar los datos en la base de datos
+        save_data(features, int(predicted_class))
+        
         
         # Crear la respuesta
         return PredictionOutput(
