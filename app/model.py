@@ -52,7 +52,7 @@ class ForestCoverModel:
         # Verificar que el modelo sea un pipeline válido
         if self.model is None:
             raise ValueError("El modelo cargado es None")
-            
+        #preprando cambio de modelo
         print(f"Modelo cargado correctamente desde {model_path}")
         print(f"Tipo de modelo: {type(self.model)}")
         
