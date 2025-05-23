@@ -1,3 +1,4 @@
+
 import dash
 from dash import dcc, html, Input, Output, State, callback_context, dash_table
 import dash_bootstrap_components as dbc
@@ -38,32 +39,80 @@ COVER_TYPE_COLORS = {
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.title = "Forest Cover Prediction Dashboard"
 
+
+
+# Header con navbar y logo centrado
+def create_header():
+    return dbc.Navbar(
+        dbc.Container([
+            # Logo centrado en el navbar
+            html.Div([
+                html.Img(
+                    src='assets/logo.png',
+                    style={
+                        'height': '60px',
+                        'width': 'auto'
+                    }
+                )
+            ], className="mx-auto")  # mx-auto centra el contenido
+        ], fluid=True),
+        color="light",
+        dark=True,
+        className="mb-0",
+        style={"box-shadow": "0 2px 4px rgba(0,0,0,0.1)"}
+    )
+
 # Layout principal
 app.layout = dbc.Container([
-    # Header
+    # Navbar con logo centrado
+    create_header(),
+    
+    # Título e información debajo del navbar
     dbc.Row([
         dbc.Col([
-            html.H1("🌲 Forest Cover Prediction Dashboard", 
-                   className="text-center mb-4 text-success"),
-            html.P("Predice el tipo de cobertura forestal basado en variables cartográficas",
-                   className="text-center text-muted mb-4")
+            html.Div([
+                html.H1("🌲 Forest Cover Prediction Dashboard", 
+                       className="text-center mb-3 text-success"),
+                html.P("Predice el tipo de cobertura forestal basado en variables cartográficas",
+                       className="text-center text-muted mb-4")
+            ], className="text-center py-4", 
+               style={"background": "linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)", 
+                      "border-radius": "0 0 10px 10px", "margin-bottom": "2rem"})
         ])
     ]),
     
     # Tabs principales
     dbc.Tabs([
         # Tab 1: Predicción Individual
-        dbc.Tab(label="Predicción Individual", tab_id="prediction-tab"),
+        dbc.Tab(label="🎯 Predicción Individual", tab_id="prediction-tab"),
         # Tab 2: Predicción por Lotes
-        dbc.Tab(label="Predicción por Lotes", tab_id="batch-tab"),
+        dbc.Tab(label="📁 Predicción por Lotes", tab_id="batch-tab"),
         # Tab 3: Visualización de Resultados
-        dbc.Tab(label="Análisis de Resultados", tab_id="analysis-tab"),
+        dbc.Tab(label="📊 Análisis de Resultados", tab_id="analysis-tab"),
         # Tab 4: Información del Modelo
-        dbc.Tab(label="Información del Modelo", tab_id="info-tab")
+        dbc.Tab(label="ℹ️ Información del Modelo", tab_id="info-tab")
     ], id="main-tabs", active_tab="prediction-tab"),
     
-    html.Div(id="tab-content", className="mt-4")
+    html.Div(id="tab-content", className="mt-4"),
+    
+    # Footer con logo pequeño
+    html.Hr(className="mt-5"),
+    dbc.Row([
+        dbc.Col([
+            html.Div([
+                html.Img(
+                    src="assets/logo.png",
+                    height="30px",
+                    className="me-2 opacity-75"
+                ),
+                html.Span("Forest Cover Prediction Dashboard © 2024", 
+                         className="text-muted small")
+            ], className="text-center py-3")
+        ])
+    ])
 ], fluid=True)
+
+
 
 # Callback para el contenido de las tabs
 @app.callback(
@@ -86,10 +135,13 @@ def create_prediction_tab():
         # Columna izquierda: Formulario de entrada
         dbc.Col([
             dbc.Card([
-                dbc.CardHeader("📊 Variables de Entrada"),
+                dbc.CardHeader([
+                    html.I(className="fa fa-chart-bar me-2"),
+                    "Variables de Entrada"
+                ]),
                 dbc.CardBody([
                     # Variables geográficas principales
-                    html.H5("Variables Topográficas", className="text-primary"),
+                    html.H5("Variables Topográficas", className="text-primary mb-3"),
                     dbc.Row([
                         dbc.Col([
                             dbc.Label("Elevación (m)"),
@@ -131,7 +183,7 @@ def create_prediction_tab():
                     ], className="mb-4"),
                     
                     # Variables de sombra
-                    html.H5("Índices de Sombra (0-255)", className="text-primary"),
+                    html.H5("Índices de Sombra (0-255)", className="text-primary mb-3"),
                     dbc.Row([
                         dbc.Col([
                             dbc.Label("Sombra 9am"),
@@ -148,7 +200,7 @@ def create_prediction_tab():
                     ], className="mb-4"),
                     
                     # Áreas silvestres
-                    html.H5("Áreas Silvestres", className="text-primary"),
+                    html.H5("Áreas Silvestres", className="text-primary mb-3"),
                     dbc.Row([
                         dbc.Col([
                             dbc.Checklist(
@@ -166,7 +218,7 @@ def create_prediction_tab():
                     ], className="mb-4"),
                     
                     # Tipos de suelo (selector simplificado)
-                    html.H5("Tipo de Suelo", className="text-primary"),
+                    html.H5("Tipo de Suelo", className="text-primary mb-3"),
                     dbc.Row([
                         dbc.Col([
                             dbc.Select(
@@ -178,7 +230,13 @@ def create_prediction_tab():
                     ], className="mb-4"),
                     
                     # Botón de predicción
-                    dbc.Button("Realizar Predicción", id="predict-btn", color="success", size="lg", className="w-100")
+                    dbc.Button(
+                        [html.I(className="fa fa-magic me-2"), "Realizar Predicción"], 
+                        id="predict-btn", 
+                        color="success", 
+                        size="lg", 
+                        className="w-100"
+                    )
                 ])
             ])
         ], width=6),
@@ -187,13 +245,19 @@ def create_prediction_tab():
         dbc.Col([
             # Resultado de la predicción
             dbc.Card([
-                dbc.CardHeader("🎯 Resultado de la Predicción"),
+                dbc.CardHeader([
+                    html.I(className="fa fa-bullseye me-2"),
+                    "Resultado de la Predicción"
+                ]),
                 dbc.CardBody(id="prediction-result")
             ], className="mb-4"),
             
             # Gráfico de probabilidades
             dbc.Card([
-                dbc.CardHeader("📈 Probabilidades por Tipo de Cobertura"),
+                dbc.CardHeader([
+                    html.I(className="fa fa-chart-line me-2"),
+                    "Probabilidades por Tipo de Cobertura"
+                ]),
                 dbc.CardBody([
                     dcc.Graph(id="probability-chart")
                 ])
@@ -205,7 +269,10 @@ def create_batch_tab():
     return dbc.Row([
         dbc.Col([
             dbc.Card([
-                dbc.CardHeader("📁 Predicción por Lotes"),
+                dbc.CardHeader([
+                    html.I(className="fa fa-folder-open me-2"),
+                    "Predicción por Lotes"
+                ]),
                 dbc.CardBody([
                     html.P("Sube un archivo CSV con múltiples muestras para realizar predicciones en lote."),
                     dcc.Upload(
@@ -228,7 +295,10 @@ def create_analysis_tab():
     return dbc.Row([
         dbc.Col([
             dbc.Card([
-                dbc.CardHeader("📊 Análisis de Predicciones"),
+                dbc.CardHeader([
+                    html.I(className="fa fa-analytics me-2"),
+                    "Análisis de Predicciones"
+                ]),
                 dbc.CardBody([
                     html.P("Aquí se mostrarán estadísticas y visualizaciones de las predicciones realizadas."),
                     dcc.Graph(id="analysis-chart"),
@@ -242,7 +312,10 @@ def create_info_tab():
     return dbc.Row([
         dbc.Col([
             dbc.Card([
-                dbc.CardHeader("ℹ️ Información del Modelo"),
+                dbc.CardHeader([
+                    html.I(className="fa fa-info-circle me-2"),
+                    "Información del Modelo"
+                ]),
                 dbc.CardBody(id="model-info")
             ])
         ])
@@ -271,7 +344,10 @@ def make_prediction(n_clicks, elevation, aspect, slope, hydrology_h, hydrology_v
                    wilderness_areas, soil_type):
     
     if not n_clicks:
-        return "Presiona el botón para realizar una predicción", {}
+        return dbc.Alert([
+            html.I(className="fa fa-info-circle me-2"),
+            "Presiona el botón para realizar una predicción"
+        ], color="info"), {}
     
     try:
         # Preparar los datos de entrada
@@ -300,7 +376,6 @@ def make_prediction(n_clicks, elevation, aspect, slope, hydrology_h, hydrology_v
             **soil_dict
         }
         
-
         response = requests.post(f"{API_BASE_URL}/predict", json=payload)
         
         if response.status_code == 200:
@@ -308,7 +383,10 @@ def make_prediction(n_clicks, elevation, aspect, slope, hydrology_h, hydrology_v
             
             # Crear el resultado visual
             prediction_card = dbc.Alert([
-                html.H4(f"🌲 {result['cover_type_name']}", className="alert-heading"),
+                html.H4([
+                    html.I(className="fa fa-tree me-2"),
+                    f"{result['cover_type_name']}"
+                ], className="alert-heading"),
                 html.P(f"Tipo de Cobertura: {result['cover_type']}"),
                 html.P(f"Confianza: {max(result['probabilities'].values()):.2%}")
             ], color="success")
@@ -333,11 +411,17 @@ def make_prediction(n_clicks, elevation, aspect, slope, hydrology_h, hydrology_v
             
         else:
             error_msg = f"Error en la API: {response.status_code}"
-            return dbc.Alert(error_msg, color="danger"), {}
+            return dbc.Alert([
+                html.I(className="fa fa-exclamation-triangle me-2"),
+                error_msg
+            ], color="danger"), {}
             
     except Exception as e:
         error_msg = f"Error: {str(e)}"
-        return dbc.Alert(error_msg, color="danger"), {}
+        return dbc.Alert([
+            html.I(className="fa fa-exclamation-circle me-2"),
+            error_msg
+        ], color="danger"), {}
 
 # Callback para cargar información del modelo
 @app.callback(
@@ -390,6 +474,7 @@ def load_model_info(active_tab):
             return dbc.Alert("Error al cargar información del modelo", color="warning")
     except Exception as e:
         return dbc.Alert(f"Error: {str(e)}", color="danger")
+
 
 # Ejecutar la aplicación
 if __name__ == "__main__":
