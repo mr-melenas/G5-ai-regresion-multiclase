@@ -1,0 +1,38 @@
+version: '4'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: forest-cover-container
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000" # Port exposed
+    env_file:
+      - .env
+    environment:
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_KEY=${SUPABASE_KEY}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://0.0.0.0:8000/docs"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+# ------------------------- Front Dash---------------------------------------------
+  dash:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: front_dash
+    command: python ./frontend/app_dash.py
+    ports:
+      - "8050:8050" # Port exposed
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://0.0.0.0:8050"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    depends_on:
+      - api

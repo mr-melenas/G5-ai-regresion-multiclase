@@ -9,18 +9,28 @@ from imblearn.over_sampling import SMOTE
 from sklearn.metrics import accuracy_score
 import joblib
 
-# -----------------------------
-# CARGA Y PREPROCESAMIENTO
-# -----------------------------
-
 # Cargar el dataset
 df = pd.read_csv("covtype.csv")
 
-# Columnas numéricas continuas que deben escalarse
-columnas_cuantitativas = ['Elevation', 'Aspect', 'Slope', 'Horizontal_Distance_To_Hydrology',
-                          'Vertical_Distance_To_Hydrology', 'Horizontal_Distance_To_Roadways',
-                          'Hillshade_9am', 'Hillshade_Noon', 'Hillshade_3pm',
-                          'Horizontal_Distance_To_Fire_Points']
+columnas_cuantitativas = [
+    'Elevation', 'Aspect', 'Slope',
+    'Horizontal_Distance_To_Hydrology', 'Vertical_Distance_To_Hydrology',
+    'Horizontal_Distance_To_Roadways',
+    'Hillshade_9am', 'Hillshade_Noon', 'Hillshade_3pm',
+    'Horizontal_Distance_To_Fire_Points'
+]
+
+columnas_wilderness = [f'Wilderness_Area{i}' for i in range(1, 5)]
+
+columnas_soil = [f'Soil_Type{i}' for i in range(1, 41)]
+
+columna_target = ['Cover_Type']
+
+todas_columnas = columnas_cuantitativas + columnas_wilderness + columnas_soil + columna_target
+
+df.columns = todas_columnas
+
+#Conviene meter un df.describe para comprobar que la variable objetivo tiene 7 tipos
 
 # Separar X e y
 X = df.drop('Cover_Type', axis=1)
@@ -45,9 +55,6 @@ preprocessor = ColumnTransformer(
     remainder='passthrough'  # Deja las demás columnas sin tocar (como las binarias)
 )
 
-# -----------------------------
-# OPTIMIZACIÓN DE HIPERPARÁMETROS
-# -----------------------------
 
 # Definir el modelo base
 rf_model = RandomForestClassifier(random_state=42)
@@ -58,29 +65,6 @@ pipe_cv = Pipeline([
     ('model', rf_model)
 ])
 
-# Definir la grilla de hiperparámetros
-param_grid = {
-    'model__n_estimators': [100, 200],
-    'model__max_depth': [None, 20, 30],
-    'model__min_samples_split': [2, 5],
-    'model__min_samples_leaf': [1, 2]
-}
-
-# Grid search
-grid_search = GridSearchCV(
-    estimator=pipe_cv,
-    param_grid=param_grid,
-    cv=3,
-    scoring='accuracy',
-    n_jobs=-1,
-    verbose=1
-)
-
-grid_search.fit(X_train_resampled, y_train_resampled)
-
-print("✅ Mejores hiperparámetros encontrados:")
-print(grid_search.best_params_)
-
 # -----------------------------
 # ENTRENAMIENTO FINAL
 # -----------------------------
@@ -89,10 +73,10 @@ print(grid_search.best_params_)
 final_pipeline = Pipeline([
     ('preprocessing', preprocessor),
     ('model', RandomForestClassifier(
-        n_estimators=grid_search.best_params_['model__n_estimators'],
-        max_depth=grid_search.best_params_['model__max_depth'],
-        min_samples_split=grid_search.best_params_['model__min_samples_split'],
-        min_samples_leaf=grid_search.best_params_['model__min_samples_leaf'],
+        n_estimators=200,
+        max_depth=None,
+        min_samples_split=2,
+        min_samples_leaf=1,
         random_state=42
     ))
 ])
