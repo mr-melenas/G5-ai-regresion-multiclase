@@ -9,6 +9,12 @@ git clone "aca luego de copiarlo lo pegas y ya esta "
 pandas,numpy,matplotlib,sklearn 
 "destacar que esas son ejemplos de las principales ya que hay multiples ramas y las librerias varian de acuerdo a la rama en la que estes, tambien por eso instala el requirements"
 
+Tecnologías Utilizadas
+Python Jupyter Docker FastAPI Render Gradio Supabase
+
+Dependencias
+Pandas NumPy Scikit-learn Uvicorn pytest BeautifulSoup Logging Keras PyTorch TensorFlow Unit Testing
+
 
 ## Requisitos
 
