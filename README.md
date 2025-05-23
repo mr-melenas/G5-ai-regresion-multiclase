@@ -6,15 +6,26 @@ Esta API permite predecir el tipo de cobertura forestal basado en variables cart
 git clone "aca luego de copiarlo lo pegas y ya esta "
 
 ## Importamos librerias 
-pandas,numpy,matplotlib,sklearn 
 "destacar que esas son ejemplos de las principales ya que hay multiples ramas y las librerias varian de acuerdo a la rama en la que estes, tambien por eso instala el requirements"
 
-Tecnologías Utilizadas
-Python Jupyter Docker FastAPI Render Gradio Supabase
+---
+## Tecnologías Utilizadas
 
-Dependencias
-Pandas NumPy Scikit-learn Uvicorn pytest BeautifulSoup Logging Keras PyTorch TensorFlow Unit Testing
+![Python](https://img.shields.io/badge/-Python-3776AB?logo=python&logoColor=white)
+![Jupyter](https://img.shields.io/badge/-Jupyter-FF3C00?logo=jupyter&logoColor=white)
+![Docker](https://img.shields.io/badge/-Docker-2496ED?logo=docker&logoColor=white)
+![FastAPI](https://img.shields.io/badge/-FastAPI-009688?logo=fastapi&logoColor=white)
+![Render](https://img.shields.io/badge/-Render-46B7C8?logo=render&logoColor=white)
+![Gradio](https://img.shields.io/badge/-Gradio-FFB400?logo=python&logoColor=black)
+![Supabase](https://img.shields.io/badge/-Supabase-3ECF8E?logo=supabase&logoColor=white)
 
+
+## Dependencias
+
+![Pandas](https://img.shields.io/badge/-Pandas-150458?logo=pandas&logoColor=white)
+![NumPy](https://img.shields.io/badge/-NumPy-013243?logo=numpy&logoColor=white)
+![Scikit-learn](https://img.shields.io/badge/-Scikit--learn-F7931E?logo=scikit-learn&logoColor=white)
+![Uvicorn](https://img.shields.io/badge/-Uvicorn-7A2A8B?logo=uvicorn&logoColor=white)
 
 ## Requisitos
 
@@ -82,36 +93,6 @@ Realiza una predicción para un conjunto de características.
 }
 ```
 
-### POST /predict/batch
-
-Realiza predicciones para múltiples conjuntos de características.
-
-**Ejemplo de solicitud:**
-
-```json
-{
-  "inputs": [
-    {
-      "Elevation": 2596,
-      ...
-    },
-    {
-      "Elevation": 2590,
-      ...
-    }
-  ]
-}
-```
-
-## Pruebas
-
-Para probar la API, ejecute:
-
-```
-python test_api.py
-```
-
-Este script creará un modelo de prueba si no existe y realizará solicitudes a todos los endpoints de la API.
 
 ## Testing
 implementaciones de testing desde test unitarios hasta test de integración 
@@ -128,13 +109,19 @@ docker run [nombre de la imagen]
 
 ## Diagrama de arquitecturas 
 
+https://cdn.discordapp.com/attachments/1372149881963024462/1375400197156376627/diagrama_er.png?ex=68318cc0&is=68303b40&hm=6d02c5c535b977f2576efc6b5740e29ceb7dd74e854334307d9ca6b64ca9f672&
+
 ## Autores 
-https://www.linkedin.com/in/andreina-suescum/
+ Andreina Suescum https://www.linkedin.com/in/andreina-suescum/
 
-https://www.linkedin.com/in/alejandro-rajado-martín/
+Alejandro Rajado Martin https://www.linkedin.com/in/alejandro-rajado-martín/
 
-https://www.linkedin.com/in/orlando-david-71417411b/
+Orlando Alcalá https://www.linkedin.com/in/orlando-david-71417411b/
 
-https://www.linkedin.com/in/max-beltran/
+Max Beltran https://www.linkedin.com/in/max-beltran/
+
+## Documentación 
+https://deepwiki.com/mr-melenas/G5-ai-regresion-multiclase aca el enlace de la documentación 
+nota: puede durar un poco a cargar la pagina entre 15-25 min
 
 
