@@ -50,7 +50,7 @@ def create_header():
                 html.Img(
                     src='assets/logo.png',
                     style={
-                        'height': '60px',
+                        'height': '90px',
                         'width': 'auto'
                     }
                 )
