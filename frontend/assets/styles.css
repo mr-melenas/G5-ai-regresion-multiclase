@@ -74,6 +74,9 @@ body {
 }
 
 /* Título principal */
+.text-success {
+    color: #000 !important;
+}
 .title-section {
     flex: 1;
 }
@@ -192,6 +195,14 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.card-header {
+    background-color: #0d6efd;
+}
+
+.nav-link {
+    color: #2d5a3d;
 }
 
 /* Responsive */

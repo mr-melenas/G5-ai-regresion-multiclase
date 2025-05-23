@@ -76,7 +76,7 @@ app.layout = dbc.Container([
                 html.P("Predice el tipo de cobertura forestal basado en variables cartográficas",
                        className="text-center text-muted mb-4")
             ], className="text-center py-4", 
-               style={"background": "linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)", 
+               style={"background": "linear-gradient(135deg, #0d6efd 0%, #e9ecef 100%)", 
                       "border-radius": "0 0 10px 10px", "margin-bottom": "2rem"})
         ])
     ]),
