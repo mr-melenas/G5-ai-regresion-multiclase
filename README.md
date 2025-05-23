@@ -92,6 +92,13 @@ Realiza una predicción para un conjunto de características.
 }
 ```
 
+## Frontend
+utilizamos Dash para correrlo tomar en cuenta estos comandos 
+cd .\frontend\
+python app_dash.py
+
+alternativa para que corra 
+python ./frontend/app_dash.py
 
 ## Testing
 implementaciones de testing desde test unitarios hasta test de integración 
