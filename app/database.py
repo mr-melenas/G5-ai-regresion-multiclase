@@ -30,7 +30,7 @@ def save_data(features, prediction):
             ]},
             "label": prediction     
         }
-        print("data_dict:", data_dict)
+        #print("data_dict:", data_dict)
         save(data_dict)
     except Exception as e:
         print("BD Error while saving data:", e)
