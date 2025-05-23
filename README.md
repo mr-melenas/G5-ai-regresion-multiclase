@@ -2,11 +2,22 @@
 
 Esta API permite predecir el tipo de cobertura forestal basado en variables cartográficas utilizando un modelo pre-entrenado.
 
+## Clonar el Repositorio 
+git clone "aca luego de copiarlo lo pegas y ya esta "
+
+## Importamos librerias 
+pandas,numpy,matplotlib,sklearn 
+"destacar que esas son ejemplos de las principales ya que hay multiples ramas y las librerias varian de acuerdo a la rama en la que estes, tambien por eso instala el requirements"
+
+
 ## Requisitos
 
 ```
 pip install -r requirements.txt
 ```
+
+## Analisis exploratorio de datos 
+se realizo un EDA al dataset de [https://archive.ics.uci.edu/dataset/31/covertype] de aqui sale la base de este proyecto y luego nos concentramos en los modelos de predicción en el cual vimos varios desde Logistic regression hasta Ramdon forest que es el que utilizamos 
 
 ## Estructura del Proyecto
 
@@ -95,3 +106,26 @@ python test_api.py
 ```
 
 Este script creará un modelo de prueba si no existe y realizará solicitudes a todos los endpoints de la API.
+
+## Testing
+implementaciones de testing desde test unitarios hasta test de integración 
+para correr el test unitario es 
+``python -m unittest test.py -v´´
+o  para mayor facilidad simplemente ``python test.py´´
+
+para correr el test de integración el comando es 
+pytest test_database.py -v
+
+## Implementación de docker 
+docker compose up --build
+docker run [nombre de la imagen]
+
+## Diagrama de arquitecturas 
+
+## Autores 
+https://www.linkedin.com/in/andreina-suescum/
+https://www.linkedin.com/in/alejandro-rajado-martín/
+https://www.linkedin.com/in/orlando-david-71417411b/
+https://www.linkedin.com/in/max-beltran/
+
+
