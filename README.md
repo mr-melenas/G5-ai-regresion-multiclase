@@ -109,7 +109,7 @@ docker run [nombre de la imagen]
 
 ## Diagrama de arquitecturas 
 
-https://cdn.discordapp.com/attachments/1372149881963024462/1375400197156376627/diagrama_er.png?ex=68318cc0&is=68303b40&hm=6d02c5c535b977f2576efc6b5740e29ceb7dd74e854334307d9ca6b64ca9f672&
+[https://cdn.discordapp.com/attachments/1372149881963024462/1375400197156376627/diagrama_er.png?ex=68318cc0&is=68303b40&hm=6d02c5c535b977f2576efc6b5740e29ceb7dd74e854334307d9ca6b64ca9f672&]
 
 ## Autores 
  Andreina Suescum https://www.linkedin.com/in/andreina-suescum/
