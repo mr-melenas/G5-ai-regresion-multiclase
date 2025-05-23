@@ -3,6 +3,7 @@ import pickle
 import pandas as pd
 import numpy as np
 import joblib
+import gdown
 from sklearn.pipeline import Pipeline
 
 
@@ -32,29 +33,46 @@ class ForestCoverModel:
     
     def load_model(self):
         """Carga el modelo pipeline pre-entrenado desde un archivo pickle"""
-        model_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'Modelos', 'modelo_pipeline.pkl')
-        if not os.path.exists(model_path):
-            raise FileNotFoundError(f"No se encontró el modelo en {model_path}")
+        #model_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'Modelos', 'modelo_pipeline.pkl')
+
+        #nuevo code prueba-----------------------------------------------------------
+        file_id = "1GN0VQ_E3BBkpYWICEx9yehcwxm0BAFxC"
+        output_path = "modelo_pipeline.pkl"
+        gdown.download(url, output_path, quiet=False)
+        if not os.path.exists(output_path):
+            url = f"https://drive.google.com/uc?id={file_id}"
+            gdown.download(url, output_path, quiet=False)
+
+        with open(output_path, "rb") as f:
+            modelo = pickle.load(f)
+
         
-        try:
-            # Intentar cargar el modelo con diferentes opciones
-            with open(model_path, 'rb') as f:
-                self.model = pickle.load(f, encoding='latin1')
-        except Exception as e:
-            # Si falla, intentar con joblib
-            try:
-                self.model = joblib.load(model_path)
-            except Exception as e2:
-                error_msg = f"Error al cargar el modelo: {str(e)} / {str(e2)}"
-                print(error_msg)
-                raise ValueError(error_msg)
+        #nuevo code prueba-------------------------------------------------------
         
-        # Verificar que el modelo sea un pipeline válido
-        if self.model is None:
-            raise ValueError("El modelo cargado es None")
-        #preprando cambio de modelo
-        print(f"Modelo cargado correctamente desde {model_path}")
-        print(f"Tipo de modelo: {type(self.model)}")
+        # if not os.path.exists(model_path):
+        #     raise FileNotFoundError(f"No se encontró el modelo en {model_path}")
+        
+        # try:
+        #     # Intentar cargar el modelo con diferentes opciones
+        #     with open(model_path, 'rb') as f:
+        #         self.model = pickle.load(f, encoding='latin1')
+        # except Exception as e:
+        #     # Si falla, intentar con joblib
+        #     try:
+        #         self.model = joblib.load(model_path)
+        #     except Exception as e2:
+        #         error_msg = f"Error al cargar el modelo: {str(e)} / {str(e2)}"
+        #         print(error_msg)
+        #         raise ValueError(error_msg)
+        
+        # # Verificar que el modelo sea un pipeline válido
+        # if self.model is None:
+        #     raise ValueError("El modelo cargado es None")
+        # #preprando cambio de modelo
+        # print(f"Modelo cargado correctamente desde {model_path}")
+        # print(f"Tipo de modelo: {type(self.model)}")
+
+        return modelo
         
     
     def _preprocess_input(self, features):
