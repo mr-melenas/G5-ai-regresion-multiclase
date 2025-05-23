@@ -123,9 +123,12 @@ docker run [nombre de la imagen]
 ## Diagrama de arquitecturas 
 
 ## Autores 
-[https://www.linkedin.com/in/andreina-suescum/]
-[https://www.linkedin.com/in/alejandro-rajado-martín/]
-[https://www.linkedin.com/in/orlando-david-71417411b/]
-[https://www.linkedin.com/in/max-beltran/]
+https://www.linkedin.com/in/andreina-suescum/
+
+https://www.linkedin.com/in/alejandro-rajado-martín/
+
+https://www.linkedin.com/in/orlando-david-71417411b/
+
+https://www.linkedin.com/in/max-beltran/
 
 
