@@ -10,7 +10,7 @@ from datetime import datetime
 import numpy as np
 
 # Configuración de la API
-API_BASE_URL = "http://localhost:8000"  # Cambiar por tu URL de producción
+API_BASE_URL = "https://forestvision.onrender.com"  # Cambiar por tu URL de producción
 
 # Mapeo de tipos de cobertura forestal
 COVER_TYPE_MAPPING = {
