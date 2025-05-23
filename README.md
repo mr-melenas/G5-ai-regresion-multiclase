@@ -122,4 +122,5 @@ Max Beltran https://www.linkedin.com/in/max-beltran/
 https://deepwiki.com/mr-melenas/G5-ai-regresion-multiclase aca el enlace de la documentación 
 nota: puede durar un poco a cargar la pagina entre 15-25 min
 
-
+## Enlace de presentación 
+https://www.canva.com/design/DAGn9jJyl1I/4-KIkZLpIS-0bJhUNkfD9g/edit
