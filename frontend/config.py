@@ -2,7 +2,7 @@ import os
 from typing import Dict, List
 
 # Configuración de la API
-API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000", "https://forestvision.onrender.com:8000")
+API_BASE_URL = os.getenv("http://localhost:8000", "https://forestvision.onrender.com:8000")
 API_TIMEOUT = 30  # segundos
 
 # Configuración del Dashboard
