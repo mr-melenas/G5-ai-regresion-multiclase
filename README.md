@@ -16,7 +16,6 @@ git clone "aca luego de copiarlo lo pegas y ya esta "
 ![Docker](https://img.shields.io/badge/-Docker-2496ED?logo=docker&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/-FastAPI-009688?logo=fastapi&logoColor=white)
 ![Render](https://img.shields.io/badge/-Render-46B7C8?logo=render&logoColor=white)
-![Gradio](https://img.shields.io/badge/-Gradio-FFB400?logo=python&logoColor=black)
 ![Supabase](https://img.shields.io/badge/-Supabase-3ECF8E?logo=supabase&logoColor=white)
 
 
