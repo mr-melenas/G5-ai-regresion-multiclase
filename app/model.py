@@ -9,6 +9,7 @@ from sklearn.pipeline import Pipeline
 class ForestCoverModel:
     def __init__(self):
         self.model = None
+        self.scaler = None
         # Características numéricas
         self.numeric_features = [
             'Elevation', 'Aspect', 'Slope', 'Horizontal_Distance_To_Hydrology',
@@ -31,30 +32,44 @@ class ForestCoverModel:
         self.all_features = self.numeric_features + self.wilderness_features + self.soil_features
     
     def load_model(self):
-        """Carga el modelo pipeline pre-entrenado desde un archivo pickle"""
-        model_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'Modelos', 'modelo_pipeline.pkl')
-        if not os.path.exists(model_path):
-            raise FileNotFoundError(f"No se encontró el modelo en {model_path}")
+        """Carga el modelo pipeline pre-entrenado desde Google Drive"""
+        import gdown
+        
+        # Directorio para almacenar el modelo descargado
+        models_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'Modelos')
+        os.makedirs(models_dir, exist_ok=True)
+        
+        model_path = os.path.join(models_dir, 'modelo_pipeline.pkl')
+        
+        # URL de Google Drive
+        url = 'https://drive.google.com/file/d/1GN0VQ_E3BBkpYWICEx9yehcwxm0BAFxC/view?usp=drive_link'
         
         try:
+            # Descargar el modelo desde Google Drive si no existe localmente
+            if not os.path.exists(model_path):
+                print(f"Descargando modelo desde Google Drive...")
+                gdown.download(url=url, output=model_path, quiet=False, fuzzy=True)
+                print(f"Modelo descargado correctamente en {model_path}")
+            else:
+                print(f"Usando modelo existente en {model_path}")
+            
             # Intentar cargar el modelo con diferentes opciones
-            with open(model_path, 'rb') as f:
-                self.model = pickle.load(f, encoding='latin1')
-        except Exception as e:
-            # Si falla, intentar con joblib
             try:
-                self.model = joblib.load(model_path)
-            except Exception as e2:
-                error_msg = f"Error al cargar el modelo: {str(e)} / {str(e2)}"
-                print(error_msg)
-                raise ValueError(error_msg)
-        
-        # Verificar que el modelo sea un pipeline válido
-        if self.model is None:
-            raise ValueError("El modelo cargado es None")
-        #preprando cambio de modelo
-        print(f"Modelo cargado correctamente desde {model_path}")
-        print(f"Tipo de modelo: {type(self.model)}")
+                with open(model_path, 'rb') as f:
+                    self.model = pickle.load(f, encoding='latin1')
+            except Exception as e:
+                # Si falla, intentar con joblib
+                try:
+                    self.model = joblib.load(model_path)
+                except Exception as e2:
+                    raise ValueError(f"Error al cargar el modelo: {str(e)} / {str(e2)}")
+            
+            print(f"Modelo cargado correctamente")
+            print(f"Tipo de modelo: {type(self.model)}")
+            
+        except Exception as e:
+            raise ValueError(f"Error al descargar o cargar el modelo: {str(e)}")
+
         
     
     def _preprocess_input(self, features):
@@ -104,20 +119,15 @@ class ForestCoverModel:
         if self.model is None:
             raise ValueError("El modelo no ha sido cargado. Llame a load_model() primero.")
         
-        try:
-            # Preprocesar los datos de entrada
-            X = self._preprocess_input(features)
-            
-            # Realizar la predicción usando el pipeline completo
-            # (el pipeline ya incluye el preprocesamiento y escalado)
-            predictions = self.model.predict(X)
-            
-            # Obtener las probabilidades para cada clase
-            probabilities = self.model.predict_proba(X)
-            
-            return predictions, probabilities
-        except Exception as e:
-            error_msg = f"Error durante la predicción: {str(e)}"
-            print(error_msg)
-            raise ValueError(error_msg)
+        # Preprocesar los datos de entrada
+        X = self._preprocess_input(features)
+        
+        # Realizar la predicción usando el pipeline completo
+        # (el pipeline ya incluye el preprocesamiento y escalado)
+        predictions = self.model.predict(X)
+        
+        # Obtener las probabilidades para cada clase
+        probabilities = self.model.predict_proba(X)
+        
+        return predictions, probabilities
 
