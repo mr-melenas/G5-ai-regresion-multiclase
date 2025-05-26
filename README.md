@@ -100,6 +100,13 @@ python app_dash.py
 alternativa para que corra 
 python ./frontend/app_dash.py
 
+## Enlaces para las paginas 
+# Fast api
+https://forestvision.onrender.com/docs
+# Fronted
+https://g5-ai-regresion-multiclase.onrender.com/
+
+
 ## Testing
 implementaciones de testing desde test unitarios hasta test de integración 
 para correr el test unitario es 
