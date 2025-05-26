@@ -103,7 +103,7 @@ python ./frontend/app_dash.py
 ## Enlaces para las paginas 
 # Fast api
 https://forestvision.onrender.com/docs
-# Fronted
+# Frontend
 https://g5-ai-regresion-multiclase.onrender.com/
 
 
