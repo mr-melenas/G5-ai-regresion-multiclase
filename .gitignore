@@ -176,3 +176,4 @@ cython_debug/
 
 .DS_Store
 /Data
+Modelos/modelo_pipeline2.pkl
